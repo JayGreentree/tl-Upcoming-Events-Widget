@@ -1,0 +1,39 @@
+.tl-upcoming {
+	border: 2px #F8D54A solid;
+}
+.tl-upcoming-header {
+	border-bottom: 2px #F8D54A solid;
+	color: #726420;
+	padding: 5px;
+	vertical-align: middle;
+}
+.tl-upcoming-content {
+	border-top: solid 2px #ccc;
+	margin: 5px;
+}
+.tl-upcoming-item {
+	border-bottom: solid 2px #ccc;
+	padding: 10px;
+}
+.tl-upcoming-button {
+	-moz-border-radius:4px;
+	-moz-box-shadow:0 2px 3px rgba(0, 0, 0, .3);
+	-webkit-border-radius:4px;
+	-webkit-box-shadow:0 2px 3px rgba(0, 0, 0, .3);
+	color: #fff;
+	cursor: pointer;
+	font-size:12px;
+	font-weight:normal;
+	padding: 5px;
+	margin: 5px;
+}
+.tl-upcoming-button-info{
+	background: #7E7E7E;
+}
+.tl-upcoming-button-buy{
+	background: #2E9DC5;
+}
+.tl-upcoming-event {}
+.tl-upcoming-performance {}
+
+.tl-upcoming-nav {}

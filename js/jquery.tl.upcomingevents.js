@@ -1,5 +1,5 @@
 /*
- * jQuery TicketLeap Upcoming Events Plugin 0.4.1
+ * jQuery TicketLeap Upcoming Events Plugin 0.1
  * Copyright (c) 2010 Tim Crowe
  *
  * http://www.ticketleap.com/
@@ -22,27 +22,45 @@
 
 	var UpcomingEvents = function(el, opts){
 		
-		// console.log(this, el, opts);
 		this.options = opts;
-		this.element = $(el);
+		this.originNode = $(el);
+		
+		this.wrapNode = $('<div class="tl-upcoming"></div>');
+		this.headerNode = $('<div class="tl-upcoming-header"></div>');
+		this.contentNode = $('<div class="tl-upcoming-content"></div>');
+		
+		this.originNode.append(this.wrapNode);
+		this.wrapNode.append(this.headerNode);
+		this.wrapNode.append(this.contentNode);
 		
 		this.showEventsList();
 		
 	}; UpcomingEvents.prototype = {
 
-		setupWrapper: function(){},
-
-		emptyWrapper: function(){
-			this.element.empty();
+		clearContent: function(){
+			
+			this.headerNode.empty();
+			this.contentNode.empty();
+			
 		},
 
+		createButton: function(content, additionalClass, clickFunction){
+			var button = $('<span class="tl-upcoming-button '+ additionalClass +'">'+ content +'</span>');
+			button.click(clickFunction);
+			return button;
+		},
+		
 		showEventsList: function(){
 			if(this.events){
-				var self = this;
-				this.emptyWrapper();
+				this.clearContent();
+
+				var self = this,
+					headerContent = $("<h2>Upcoming Events</h2>");
+
+				this.headerNode.append(headerContent);
 				
-				$.each(this.events, function(idx, evt){
-					self.element.append(self.createEvent(evt.name, evt.slug));
+				$.each(this.events, function(i, eventObj){
+					self.contentNode.append(self.createEvent(eventObj));
 				});
 			} else {
 				this.getEventsList();
@@ -57,40 +75,52 @@
 				url: this.options.apiUrl + "organizations/bacons/events?callback=?",
 				dataType: 'json',
 				success: function(data){
-					$.each(data.events, function(idx, evt){
-						// console.log(self, idx, evt);
-						self.events[evt.slug] = evt;
+					$.each(data.events, function(idx, eventObj){
+						self.events[eventObj.slug] = eventObj;
 					});
 					self.showEventsList();
 				}
 			});
 		},
 
-		createEvent: function(eventName, eventSlug){
-			var self = this;
+		createEvent: function(eventObj){
+			var self = this,
+				eventEl = $('<div class="tl-upcoming-item tl-upcoming-event"><span class="tl-upcoming-item-label tl-upcoming-event-label">'+eventObj.name+'</span></div>');
+
+			if(eventObj.performance_count == 1){
+				eventEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
+					window.open(eventObj.url);
+				}));
+			} else if(eventObj.performance_count > 1){
+				eventEl.append(this.createButton('Info', 'tl-upcoming-button-info', function(){
+					window.open(eventObj.url);
+				}));
+
+				eventEl.append(this.createButton('Dates &raquo;', 'tl-upcoming-button-info', function(){
+					self.showPerformancesList(eventObj.slug);
+				}));
+			}
 			
-			eventEl = $('<div class="tl-event">'+eventName+'</div>');
-			eventEl.click(function(){
-				self.showPerformancesList(eventSlug);
-			});
 			return eventEl;
 		},
 
 		showPerformancesList: function(eventSlug){
 			if(this.events[eventSlug].performances){
+				this.clearContent();
 				
-				var self = this;
-				this.emptyWrapper();
-				
-				showEventsElement = $('<div>Show All Events</div>');
-				showEventsElement.click(function(){
+				var self = this,
+					backButton = $('<span class="tl-upcoming-button tl-upcoming-button-info">&laquo; View all events</span>'),
+					headerContent = $('<h2>'+ this.events[eventSlug].name +'</h2>');
+
+				backButton.click(function(){
 					self.showEventsList();
 				});
 				
-				self.element.append(showEventsElement);
+				this.headerNode.append(headerContent);
+				this.headerNode.append(backButton);
 				
-				$.each(this.events[eventSlug].performances, function(idx, perf){
-					self.element.append(self.createPerformance(perf.start_utc, perf.end_utc, perf.slug));
+				$.each(this.events[eventSlug].performances, function(idx, performanceObj){
+					self.contentNode.append(self.createPerformance(performanceObj));
 				});
 				
 			} else {
@@ -106,21 +136,22 @@
 				url: this.options.apiUrl + "organizations/bacons/events/"+eventSlug+"?callback=?",
 				dataType: 'json',
 				success: function(data){
-					$.each(data.performances, function(idx, perf){
-						self.events[eventSlug].performances[perf.slug] = perf;
+					$.each(data.performances, function(i, performanceObj){
+						self.events[eventSlug].performances[performanceObj.slug] = performanceObj;
 					});
 					self.showPerformancesList(eventSlug);
 				}
 			});
 		},
 		
-		createPerformance: function(performanceStart, performanceEnd, performanceSlug){
-			var self = this;
-			
-			perfEl = $('<div class="tl-performance">'+performanceStart+' - '+performanceEnd+'</div>');
-			// eventEl.click(function(){
-			// 	self.showPerformancesList(eventSlug);
-			// });
+		createPerformance: function(performanceObj){
+			var self = this,
+				perfEl = $('<div class="tl-upcoming-item tl-upcoming-performance">'+performanceObj.start_utc+' - '+performanceObj.end_utc+'</div>');
+				
+			perfEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
+				window.open(performanceObj.url);
+			}));
+				
 			return perfEl;
 		}
 		
