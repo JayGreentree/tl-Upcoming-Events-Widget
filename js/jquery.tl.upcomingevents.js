@@ -8,6 +8,11 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
 */
+
+String.prototype.capitalize = function(){
+   return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
+};
+
 (function($){
 
 	$.fn.extend({
@@ -25,71 +30,156 @@
 		this.options = opts;
 		this.originNode = $(el);
 		
-		this.wrapNode = $('<table class="tl-upcoming"></table>');
-		this.headerNode = $('<thead class="tl-upcoming-header"></thead>');
-		this.contentNode = $('<tbody class="tl-upcoming-content"></tbody>');
-		this.navNode = $('<tfoot class="tl-upcoming-nav"></tfoot>');
-		
-		this.originNode.append(this.wrapNode);
-		this.wrapNode.append(this.headerNode);
-		this.wrapNode.append(this.contentNode);
-		this.wrapNode.append(this.navNode);
-		
-		this.eventPage = 1;
-		
+		this.buildShell();
 		this.showEventsList();
 		
 	}; UpcomingEvents.prototype = {
-
-		clearContent: function(){
+		
+		// base attributes
+		options: null,
+		originNode: null,
+		shell: null,
+		events: null,
+		
+		// header components
+		headerLabel: null,
+		
+		// content area
+		content: null,
+		
+		// navigation buttons
+		nextButton: null,
+		previousButton: null,
+		viewEventsButton: null,
+		
+		// paging
+		currentView: 'events', // performances
+		currentEvent: '',
+		eventsPage: 1,
+		performancesPage: 1,
+		
+		buildShell: function(){
+			// this.originNode.empty();
 			
-			this.headerNode.empty();
-			this.contentNode.empty();
-			this.navNode.empty();
+			var self = this,
+				html = 
+				'<table class="tl-upcoming">' +
+					'<thead class="tl-upcoming-header">' + 
+						'<tr>' +
+							'<td class="tl-upcoming-header-label" colspan="3"><h2></h2></td>' +
+						'</tr>' +
+					'</thead>' +
+					'<tbody class="tl-upcoming-content"></tbody>' +
+					'<tfoot class="tl-upcoming-nav">' +
+						'<tr>' +
+							'<td class="tl-upcoming-nav-previous"><span class="tl-upcoming-button tl-upcoming-button-page">&laquo; Previous</span></td>' +
+							'<td class="tl-upcoming-nav-events"><span class="tl-upcoming-button tl-upcoming-button-info">View Events</span></td>' +
+							'<td class="tl-upcoming-nav-next"><span class="tl-upcoming-button tl-upcoming-button-page">Next &raquo;</span></td>' +
+						'</tr>' +
+					'</tfoot>' +
+				'</table>'+
+				'<br />';
+			
+			this.shell = $(html);
+			
+			// get header nodes
+			this.headerLabel = this.shell.find('.tl-upcoming-header-label h2');
+			
+			// get content area node
+			this.content = this.shell.find('.tl-upcoming-content');
+			
+			// setup navigation
+			this.nextButton = this.shell.find('.tl-upcoming-nav-next .tl-upcoming-button');
+			this.previousButton = this.shell.find('.tl-upcoming-nav-previous .tl-upcoming-button');
+			this.viewEventsButton = this.shell.find('.tl-upcoming-nav-events .tl-upcoming-button');
+			
+			this.nextButton.click(function(){ self.page(true); });
+			this.previousButton.click(function(){ self.page(false); });
+			this.viewEventsButton.click(function(){ self.showEventsList(); });
+			
+			this.setPageButtonStates();
+			
+			// place shell nodes
+			this.originNode.prepend(this.shell);
 			
 		},
 
+		page: function(forward){
+			this[this.currentView + 'Page'] += (forward ? 1 : -1);
+			if(this.currentView == 'events'){
+				this.events = null;
+			} else if( this.currentView == 'performances'){
+				this.events[this.currentEvent].performances = null;
+			}
+			this['show' + this.currentView.capitalize() + 'List'](this.currentEvent);
+			this.setPageButtonStates();
+		},
+
+		setPageButtonStates: function(){
+			this.previousButton[this.isFirstPage() ? 'hide' : 'show']();
+			this.nextButton[this.isLastPage() ? 'hide' : 'show']();
+		},
+
+		isFirstPage: function(){
+			return (this.currentView == 'events' && this.eventsPage == 1) || 
+					(this.currentView == 'performances' && this.performancesPage == 1);
+		},
+		
+		isLastPage: function(){
+			return (this.currentView == 'events' && (this.eventsPage*this.options.pageSize >= this.total_events)) ||
+					(this.currentView == 'performances' && (this.performancesPage*this.options.pageSize >= this.events[this.currentEvent].performance_count));
+		},
+
+		clearContent: function(){
+			this.content.empty();
+		},
+
 		createButton: function(content, additionalClass, clickFunction){
-			var button = $('<td><span class="tl-upcoming-button '+ additionalClass +'">'+ content +'</span></td>');
+			var button = $('<td class="tl-upcoming-item-control"><span class="tl-upcoming-button '+ additionalClass +'">'+ content +'</span></td>');
 			button.click(clickFunction);
 			return button;
 		},
 		
 		showEventsList: function(){
+			var self = this;
+			
+			this.currentView = 'events';
+			this.currentEvent = '';
+			this.performancesPage = 1;
+			this.headerLabel.html('Upcoming Events');
+			this.viewEventsButton.hide();
+			
 			if(this.events){
 				this.clearContent();
-				this.performancePage = 1;
-
-				var self = this,
-					headerContent = $("<h2>Upcoming Events</h2>");
-
-				this.headerNode.append(headerContent);
-				
-				if(this.eventPage != 1){
-					this.navNode.append(this.createButton('&laquo;', 'tl-upcoming-button-page', function(){ self.pageEventsList(false); }));
-				}
-
-				if(this.eventPage*this.options.pageSize < this.total_events){
-					this.navNode.append(this.createButton('&raquo;', 'tl-upcoming-button-page', function(){ self.pageEventsList(true); }));
-				}
-				
 				$.each(this.events, function(i, eventObj){
-					self.contentNode.append(self.createEvent(eventObj));
+					self.content.append(self.createEvent(eventObj));
 				});
 			} else {
 				this.getEventsList();
 			}
 		},
 
+		ISODateString: function(d){
+			function pad(n){ return n<10 ? '0'+n : n; }
+
+			return d.getUTCFullYear()+'-'
+			+ pad(d.getUTCMonth()+1)+'-'
+			+ pad(d.getUTCDate())+'T'
+			+ pad(d.getUTCHours())+''
+			+ pad(d.getUTCMinutes());
+		},
+		
 		getEventsList: function(){
 			var self = this;
+			
 			this.events = {};
 
 			$.ajax({
 				url: this.options.apiUrl + "organizations/"+ this.options.orgSlug +"/events?callback=?",
 				data: {
-					page_num: this.eventPage,
-					page_size: this.options.pageSize
+					page_num: this.eventsPage,
+					page_size: this.options.pageSize,
+					dates_after: this.ISODateString(new Date)
 				},
 				dataType: 'json',
 				success: function(data){
@@ -101,26 +191,16 @@
 				}
 			});
 		},
-		
-		pageEventsList: function(forward){
-			this.events = null;
-			this.eventPage += (forward ? 1 : -1);
-			this.showEventsList();
-		},
 
 		createEvent: function(eventObj){
 			var self = this,
-				eventEl = $('<tr class="tl-upcoming-item tl-upcoming-event"><td class="tl-upcoming-item-label tl-upcoming-event-label">'+eventObj.name+'</td></tr>');
+				eventEl = $('<tr class="tl-upcoming-item tl-upcoming-event"><td class="tl-upcoming-item-label tl-upcoming-event-label" colspan="2">'+eventObj.name+'</td></tr>');
 
 			if(eventObj.performance_count == 1){
 				eventEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
 					window.open(eventObj.url);
 				}));
 			} else if(eventObj.performance_count > 1){
-				eventEl.append(this.createButton('Info', 'tl-upcoming-button-info', function(){
-					window.open(eventObj.url);
-				}));
-
 				eventEl.append(this.createButton('Dates &raquo;', 'tl-upcoming-button-info', function(){
 					self.showPerformancesList(eventObj.slug);
 				}));
@@ -130,32 +210,18 @@
 		},
 
 		showPerformancesList: function(eventSlug){
+			var self = this;
+			
+			this.currentView = 'performances';
+			this.currentEvent = eventSlug;
+			this.headerLabel.html(this.events[eventSlug].name);
+			this.viewEventsButton.show();
+			
 			if(this.events[eventSlug].performances){
 				this.clearContent();
-				
-				var self = this,
-					backButton = $('<span class="tl-upcoming-button tl-upcoming-button-info">&laquo; View all events</span>'),
-					headerContent = $('<h2>'+ this.events[eventSlug].name +'</h2>');
-
-				backButton.click(function(){
-					self.showEventsList();
-				});
-				
-				this.headerNode.append(headerContent);
-				this.headerNode.append(backButton);
-				
-				if(this.performancePage != 1){
-					this.navNode.append(this.createButton('&laquo;', 'tl-upcoming-button-page', function(){ self.pagePerformancesList(eventSlug, false); }));
-				}
-
-				if(this.performancePage*this.options.pageSize < this.events[eventSlug].performance_count){
-					this.navNode.append(this.createButton('&raquo;', 'tl-upcoming-button-page', function(){ self.pagePerformancesList(eventSlug, true); }));
-				}
-				
 				$.each(this.events[eventSlug].performances, function(idx, performanceObj){
-					self.contentNode.append(self.createPerformance(performanceObj));
+					self.content.append(self.createPerformance(performanceObj));
 				});
-				
 			} else {
 				this.getPerformancesList(eventSlug);
 			}
@@ -168,8 +234,9 @@
 			$.ajax({
 				url: this.options.apiUrl + "organizations/"+ this.options.orgSlug +"/events/"+eventSlug+"?callback=?",
 				data: {
-					page_num: this.performancePage,
-					page_size: this.options.pageSize
+					page_num: this.performancesPage,
+					page_size: this.options.pageSize,
+					dates_after: this.ISODateString(new Date)
 				},
 				dataType: 'json',
 				success: function(data){
@@ -180,16 +247,10 @@
 				}
 			});
 		},
-		
-		pagePerformancesList: function(eventSlug, forward){
-			this.events[eventSlug].performances = null;
-			this.performancePage += (forward ? 1 : -1);
-			this.showPerformancesList(eventSlug);
-		},
 
 		createPerformance: function(performanceObj){
 			var self = this,
-				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td>'+performanceObj.start_utc+' - '+performanceObj.end_utc+'</td></tr>');
+				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td class="tl-upcoming-item-label tl-upcoming-performance-label" colspan="2">'+performanceObj.start_local+' - '+performanceObj.end_local+'</td></tr>');
 				
 			perfEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
 				window.open(performanceObj.url);
