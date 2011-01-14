@@ -258,8 +258,10 @@ String.prototype.capitalize = function(){
 
 		createPerformance: function(performanceObj){
 			var self = this,
-				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td class="tl-upcoming-item-label tl-upcoming-performance-label" colspan="2">'+performanceObj.start_local+' - '+performanceObj.end_local+'</td></tr>');
-				
+				start = new Date(performanceObj.start_local).toLocaleString(),
+				end = new Date(performanceObj.end_local).toLocaleString(),
+				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td class="tl-upcoming-item-label tl-upcoming-performance-label" colspan="2">'+start+' - '+end+'</td></tr>');
+			
 			perfEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
 				window.open(performanceObj.url);
 			}));
