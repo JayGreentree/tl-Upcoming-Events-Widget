@@ -1,6 +1,11 @@
 .tl-upcoming {
+	width: 700px;
+	position: relative;
+}
+.tl-upcoming table {
 	border-collapse:collapse;
-	width: 500px;
+	table-layout:fixed;
+	width: 100%;
 }
 .tl-upcoming-header {
 	background: #2E9DC5;
@@ -19,18 +24,19 @@
 	padding: 10px;
 }
 .tl-upcoming-item td {
-	border-collapse: collapse;
 	border-top: solid 2px #ccc;
+}
+.tl-upcoming-item .tl-upcoming-item-label {
+	width: 600px;
 }
 .tl-upcoming-item-label {
 	color: #777;
 	overflow: hidden;
 	vertical-align: middle;
-/*	width: 400px;*/
 }
 .tl-upcoming-item-control {
 	text-align: right;
-	width: 100px;
+	width: 90px;
 }
 .tl-upcoming-button {
 	-moz-border-radius:4px;
@@ -67,6 +73,7 @@
 .tl-upcoming-nav-events,
 .tl-upcoming-nav-next {
 	width: 150px;
+	height: 39px;
 }
 .tl-upcoming-nav-previous {
 	text-align: left;

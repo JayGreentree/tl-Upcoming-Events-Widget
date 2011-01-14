@@ -63,22 +63,27 @@ String.prototype.capitalize = function(){
 			
 			var self = this,
 				html = 
-				'<table class="tl-upcoming">' +
-					'<thead class="tl-upcoming-header">' + 
-						'<tr>' +
-							'<td class="tl-upcoming-header-label" colspan="3"><h2></h2></td>' +
-						'</tr>' +
-					'</thead>' +
-					'<tbody class="tl-upcoming-content"></tbody>' +
-					'<tfoot class="tl-upcoming-nav">' +
-						'<tr>' +
-							'<td class="tl-upcoming-nav-previous"><span class="tl-upcoming-button tl-upcoming-button-page">&laquo; Previous</span></td>' +
-							'<td class="tl-upcoming-nav-events"><span class="tl-upcoming-button tl-upcoming-button-info">View Events</span></td>' +
-							'<td class="tl-upcoming-nav-next"><span class="tl-upcoming-button tl-upcoming-button-page">Next &raquo;</span></td>' +
-						'</tr>' +
-					'</tfoot>' +
-				'</table>'+
-				'<br />';
+				'<div class="tl-upcoming">' +
+					'<table>' +
+						'<tbody class="tl-upcoming-header">' + 
+							'<tr>' +
+								'<td class="tl-upcoming-header-label"><h2></h2></td>' +
+							'</tr>' +
+						'</tbody>' +
+					'</table>'+
+					'<table>' +
+						'<tbody class="tl-upcoming-content"></tbody>' +
+					'</table>'+
+					'<table>' +
+						'<tbody class="tl-upcoming-nav">' +
+							'<tr>' +
+								'<td class="tl-upcoming-nav-previous"><span class="tl-upcoming-button tl-upcoming-button-page">&laquo; Previous</span></td>' +
+								'<td class="tl-upcoming-nav-events"><span class="tl-upcoming-button tl-upcoming-button-info">View Events</span></td>' +
+								'<td class="tl-upcoming-nav-next"><span class="tl-upcoming-button tl-upcoming-button-page">Next &raquo;</span></td>' +
+							'</tr>' +
+						'</tbody>' +
+					'</table>'+
+				'</div>';
 			
 			this.shell = $(html);
 			
