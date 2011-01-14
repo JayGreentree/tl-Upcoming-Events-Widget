@@ -57,6 +57,7 @@ String.prototype.capitalize = function(){
 		currentEvent: '',
 		eventsPage: 1,
 		performancesPage: 1,
+		totalEvents: 0,
 		
 		buildShell: function(){
 			// this.originNode.empty();
@@ -117,7 +118,6 @@ String.prototype.capitalize = function(){
 				this.events[this.currentEvent].performances = null;
 			}
 			this['show' + this.currentView.capitalize() + 'List'](this.currentEvent);
-			this.setPageButtonStates();
 		},
 
 		setPageButtonStates: function(){
@@ -131,8 +131,9 @@ String.prototype.capitalize = function(){
 		},
 		
 		isLastPage: function(){
-			return (this.currentView == 'events' && (this.eventsPage*this.options.pageSize >= this.total_events)) ||
-					(this.currentView == 'performances' && (this.performancesPage*this.options.pageSize >= this.events[this.currentEvent].performance_count));
+			return (this.currentView == 'events' && ((this.options.pageSize > this.totalEvents) || (this.eventsPage*this.options.pageSize >= this.totalEvents))) ||
+					(this.currentView == 'performances' && ((this.options.pageSize > this.events[this.currentEvent].performance_count) || 
+															(this.performancesPage*this.options.pageSize >= this.events[this.currentEvent].performance_count)));
 		},
 
 		clearContent: function(){
@@ -159,6 +160,7 @@ String.prototype.capitalize = function(){
 				$.each(this.events, function(i, eventObj){
 					self.content.append(self.createEvent(eventObj));
 				});
+				this.setPageButtonStates();
 			} else {
 				this.getEventsList();
 			}
@@ -191,7 +193,7 @@ String.prototype.capitalize = function(){
 					$.each(data.events, function(idx, eventObj){
 						self.events[eventObj.slug] = eventObj;
 					});
-					self.total_events = data.total_count;
+					self.totalEvents = data.total_count;
 					self.showEventsList();
 				}
 			});
@@ -227,6 +229,7 @@ String.prototype.capitalize = function(){
 				$.each(this.events[eventSlug].performances, function(idx, performanceObj){
 					self.content.append(self.createPerformance(performanceObj));
 				});
+				this.setPageButtonStates();
 			} else {
 				this.getPerformancesList(eventSlug);
 			}
