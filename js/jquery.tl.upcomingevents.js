@@ -273,7 +273,7 @@ String.prototype.capitalize = function(){
 
 	// default options
 	// $.fn.upcomingEvents.defaults = {
-	// 	pageSize: 4,
+	// 	pageSize: 2,
 	// 	orgSlug: 'bacons',
 	// 	apiUrl: "http://publicapi.local.ticketleap.com:8002/"
 	// };
@@ -281,7 +281,6 @@ String.prototype.capitalize = function(){
 	// default options
 	$.fn.upcomingEvents.defaults = {
 		pageSize: 10,
-		orgSlug: 'awesomepuppies',
 		apiUrl: "http://publicapi.current.ticketleap.com/"
 	};
 
