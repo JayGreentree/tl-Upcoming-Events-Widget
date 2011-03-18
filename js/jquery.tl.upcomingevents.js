@@ -8,11 +8,6 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
 */
-
-String.prototype.capitalize = function(){
-   return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
-};
-
 (function($){
 
 	$.fn.extend({
@@ -65,34 +60,32 @@ String.prototype.capitalize = function(){
 			var self = this,
 				html = 
 				'<div class="tl-upcoming">' +
-					'<table>' +
-						'<tbody class="tl-upcoming-header">' + 
-							'<tr>' +
-								'<td class="tl-upcoming-header-label"><h2></h2></td>' +
-							'</tr>' +
-						'</tbody>' +
-					'</table>'+
-					'<table>' +
-						'<tbody class="tl-upcoming-content"></tbody>' +
-					'</table>'+
-					'<table>' +
-						'<tbody class="tl-upcoming-nav">' +
+					'<div class="tl-upcoming-header">' +
+						'<h2 class="tl-upcoming-header-label"></h2>' +
+					'</div>'+
+					
+					'<div class="tl-upcoming-content">' +
+						'<table class="tl-upcoming-content-list"></table>'+
+					'</div>' +
+					
+					'<div class="tl-upcoming-nav">' +
+						'<table class="tl-upcoming-nav-controls">' +
 							'<tr>' +
 								'<td class="tl-upcoming-nav-previous"><span class="tl-upcoming-button tl-upcoming-button-page">&laquo; Previous</span></td>' +
 								'<td class="tl-upcoming-nav-events"><span class="tl-upcoming-button tl-upcoming-button-info">View Events</span></td>' +
 								'<td class="tl-upcoming-nav-next"><span class="tl-upcoming-button tl-upcoming-button-page">Next &raquo;</span></td>' +
 							'</tr>' +
-						'</tbody>' +
-					'</table>'+
+						'</table>'+
+					'</div>' +
 				'</div>';
 			
 			this.shell = $(html);
 			
 			// get header nodes
-			this.headerLabel = this.shell.find('.tl-upcoming-header-label h2');
+			this.headerLabel = this.shell.find('.tl-upcoming-header-label');
 			
 			// get content area node
-			this.content = this.shell.find('.tl-upcoming-content');
+			this.content = this.shell.find('.tl-upcoming-content-list');
 			
 			// setup navigation
 			this.nextButton = this.shell.find('.tl-upcoming-nav-next .tl-upcoming-button');
@@ -109,6 +102,10 @@ String.prototype.capitalize = function(){
 			this.originNode.prepend(this.shell);
 			
 		},
+		
+		capitalize: function(){
+		   return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
+		},
 
 		page: function(forward){
 			this[this.currentView + 'Page'] += (forward ? 1 : -1);
@@ -117,7 +114,7 @@ String.prototype.capitalize = function(){
 			} else if( this.currentView == 'performances'){
 				this.events[this.currentEvent].performances = null;
 			}
-			this['show' + this.currentView.capitalize() + 'List'](this.currentEvent);
+			this['show' + this.capitalize(this.currentView) + 'List'](this.currentEvent);
 		},
 
 		setPageButtonStates: function(){
@@ -164,6 +161,8 @@ String.prototype.capitalize = function(){
 			} else {
 				this.getEventsList();
 			}
+			$(this.content.find('tr').get(0)).addClass('tl-upcoming-item-first');
+			$(this.content.find('tr').get(-1)).addClass('tl-upcoming-item-last');
 		},
 
 		ISODateString: function(d){
@@ -188,7 +187,7 @@ String.prototype.capitalize = function(){
 					page_size: this.options.pageSize,
 					dates_after: this.ISODateString(new Date)
 				},
-				dataType: 'json',
+				dataType: 'jsonp',
 				success: function(data){
 					$.each(data.events, function(idx, eventObj){
 						self.events[eventObj.slug] = eventObj;
@@ -233,6 +232,8 @@ String.prototype.capitalize = function(){
 			} else {
 				this.getPerformancesList(eventSlug);
 			}
+			$(this.content.find('tr').get(0)).addClass('tl-upcoming-item-first');
+			$(this.content.find('tr').get(-1)).addClass('tl-upcoming-item-last');
 		},
 		
 		getPerformancesList: function(eventSlug){
@@ -270,13 +271,6 @@ String.prototype.capitalize = function(){
 		}
 		
 	};
-
-	// default options
-	// $.fn.upcomingEvents.defaults = {
-	// 	pageSize: 2,
-	// 	orgSlug: 'bacons',
-	// 	apiUrl: "http://publicapi.local.ticketleap.com:8002/"
-	// };
 
 	// default options
 	$.fn.upcomingEvents.defaults = {
