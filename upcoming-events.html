@@ -6,19 +6,27 @@
 		
 		<link rel="stylesheet" href="css/jquery.tl.upcoming.css" type="text/css" media="screen" />
 
-		<script src="js/jquery-1.4.4.js" type="text/javascript"></script>
+		<script src="js/jquery-1.5.1.js" type="text/javascript"></script>
 		<script src="js/jquery.tl.upcomingevents.js" type="text/javascript"></script>
 		<script>
 			$(function(){
-				$('#org_slug_button').click(function(){
-					var orgSlug = $('#org_slug').val();
-					$('#upcoming-events').upcomingEvents({ orgSlug: orgSlug });
-				});
+				
+				$('#upcoming-events').upcomingEvents({ 
+					pageSize: 10,
+					orgSlug: 'bacons',
+					apiUrl: "http://publicapi.local.ticketleap.com:8002/"
+				 });
+				
+				// $('#org_slug_button').click(function(){
+				// 	var orgSlug = $('#org_slug').val();
+				// 	$('#upcoming-events').upcomingEvents({ orgSlug: orgSlug });
+				// });
+				
 			});
 		</script>
 	</head>
 	<body>
-		<p>Organization Slug <input id="org_slug" type="text" value="awesomepuppies" /> <input id="org_slug_button" type="submit"></p>
+		<p>Organization Slug <input id="org_slug" type="text" value="" /> <input id="org_slug_button" type="submit"></p>
 		<div id="upcoming-events"></div>
 	</body>
 </html>
