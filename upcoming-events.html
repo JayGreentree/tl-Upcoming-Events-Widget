@@ -11,22 +11,45 @@
 		<script>
 			$(function(){
 				
-				$('#upcoming-events').upcomingEvents({ 
-					pageSize: 10,
-					orgSlug: 'bacons',
-					apiUrl: "http://publicapi.local.ticketleap.com:8002/"
-				 });
+				var loadEvents = function(){
+					$('#upcoming-events').upcomingEvents({ 
+						pageSize: $('#perpage').val(),
+						orgSlug: $('#orgslug').val(),
+						apiUrl: $('#endpoint').val()
+					 });
+				};
 				
-				// $('#org_slug_button').click(function(){
-				// 	var orgSlug = $('#org_slug').val();
-				// 	$('#upcoming-events').upcomingEvents({ orgSlug: orgSlug });
-				// });
+				$('#loadevents').submit(function(evt){
+					evt.preventDefault();
+					loadEvents();
+				});
+				
+				loadEvents();
 				
 			});
 		</script>
 	</head>
 	<body>
-		<p>Organization Slug <input id="org_slug" type="text" value="" /> <input id="org_slug_button" type="submit"></p>
+		<form id="loadevents">
+			<table border="0" cellpadding="5" style="margin: 0 0 20px 0;">
+				<tr>
+					<td>Organization Slug: </td>
+					<td><input id="orgslug" type="text" value="awesomepuppies" style="width: 300px;" /></td>
+				</tr>
+				<tr>
+					<td>Page Size:</td>
+					<td><input id="perpage" type="text" value="10" style="width: 300px;" /></td>
+				</tr>
+				<tr>
+					<td>API Endpoint:</td>
+					<td><input id="endpoint" type="text" value="http://publicapi.current.ticketleap.com/" style="width: 300px;" /></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><button type="submit">Load Events</button></td>
+				</tr>
+			</table>
+		</form>
 		<div id="upcoming-events"></div>
 	</body>
 </html>
