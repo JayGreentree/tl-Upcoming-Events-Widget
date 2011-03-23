@@ -103,8 +103,8 @@
 			
 		},
 		
-		capitalize: function(){
-		   return this.charAt(0).toUpperCase() + this.substring(1).toLowerCase();
+		capitalize: function(str){
+		   return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
 		},
 
 		page: function(forward){
