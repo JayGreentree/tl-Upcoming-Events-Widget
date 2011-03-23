@@ -189,7 +189,7 @@
 
 		createPerformance: function(performanceObj){
 			var self = this,
-				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td>'+performanceObj.start_utc+' - '+performanceObj.end_utc+'</td></tr>');
+				perfEl = $('<tr class="tl-upcoming-item tl-upcoming-performance"><td>'+performanceObj.start_local+' - '+performanceObj.end_local+'</td></tr>');
 				
 			perfEl.append(this.createButton('Buy Tickets', 'tl-upcoming-button-buy', function(){
 				window.open(performanceObj.url);
