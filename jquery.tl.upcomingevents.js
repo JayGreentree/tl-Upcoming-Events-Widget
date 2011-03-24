@@ -32,7 +32,7 @@
 				year: d.getFullYear(),
 				hour: (d.getHours() > 12 ? d.getHours() - 12 : (d.getHours() == 0 ? 12 : d.getHours())),
 				minute: (d.getMinutes() > 10 ? d.getMinutes() : "0"+d.getMinutes()),
-				ampm: (d.getHours() > 12 ? 'p.m.' : 'a.m.'),
+				ampm: (d.getHours() >= 12 ? 'p.m.' : 'a.m.'),
 				toDateString: function(){
 					return this.day + ", " +
 							this.month + " " +
