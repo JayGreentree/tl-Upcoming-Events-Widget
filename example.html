@@ -8,10 +8,13 @@
 
 		<script src="js/jquery-1.5.1.js" type="text/javascript"></script>
 		<script src="js/jquery.tl.upcomingevents.js" type="text/javascript"></script>
+
 		<script>
 			$(function(){
 				
 				var loadEvents = function(){
+					$("#upcoming-events").empty();
+					
 					$('#upcoming-events').upcomingEvents({ 
 						pageSize: $('#perpage').val(),
 						orgSlug: $('#orgslug').val(),
