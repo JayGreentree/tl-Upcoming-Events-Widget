@@ -146,7 +146,7 @@
 					e = new FormattableDate(endDate);
 				
 				return (s.toDateString() == e.toDateString() ? 
-							s.toDateString() + ' ' + s.toTimeString() + '-' + e.toTimeString() :
+							s.toDateString() + ' ' + s.toTimeString() + ' - ' + e.toTimeString() :
 							s.toString() + ' - ' + e.toString());
 			},
 
