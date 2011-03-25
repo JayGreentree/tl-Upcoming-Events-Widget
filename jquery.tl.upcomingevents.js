@@ -313,7 +313,7 @@
 
 	// default options
 	$.fn.upcomingEvents.defaults = {
-		pageSize: 10,
+		pageSize: 5,
 		apiUrl: "http://public-api.current.ticketleap.com/"
 	};
 
