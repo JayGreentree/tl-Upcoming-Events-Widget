@@ -14,15 +14,15 @@
 <p>On the page you will be using the Upcoming Events Widget, add the following HTML to the head of your page.</p>
 
 <pre><code class="brush: xml;">
-	<link href="PATH_TO_SOURCE/jquery.tl.upcoming.css" rel="stylesheet" type="text/css" />
-	<script src="PATH_TO_SOURCE/jquery-1.5.1.js" type="text/javascript"></script>
-	<script src="PATH_TO_SOURCE/jquery.tl.upcomingevents.js" type="text/javascript"></script>;
+	&lt;link href="PATH_TO_SOURCE/jquery.tl.upcoming.css" rel="stylesheet" type="text/css" /&gt;
+	&lt;script src="PATH_TO_SOURCE/jquery-1.5.1.js" type="text/javascript"&gt;&lt;/script&gt;
+	&lt;script src="PATH_TO_SOURCE/jquery.tl.upcomingevents.js" type="text/javascript"&gt;&lt;/script&gt;;
 </code></pre>
 
 <p>Place the following html on your page where you want to show the Upcoming Events Widget.</p>
 
 <pre><code class="brush: xml;">
-	<div id="#upcoming-events"></div>
+	&lt;div id="#upcoming-events"&gt;&lt;/div&gt;
 </code></pre>
 
 <p>Initialize the Upcoming Events Widget. The code below can be placed anywhere on your page. There are two 
@@ -35,7 +35,7 @@
 </ul>
 
 <pre><code class="brush: js;">
-<script type="text/javascript">
+&lt;script type="text/javascript"&gt;
 	$(function(){
 
 		$('#upcoming-events').upcomingEvents({
@@ -44,7 +44,7 @@
 		 });
 
 	});
-</script>
+&lt;/script&gt;
 </code></pre>
 
 <h2>Customizing</h2>
