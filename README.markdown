@@ -13,9 +13,9 @@
 
 <p>On the page you will be using the Upcoming Events Widget, add the following HTML to the head of your page.</p>
 
-<pre><code class="brush: xml;">	&lt;link href="PATH_TO_SOURCE/jquery.tl.upcoming.css" rel="stylesheet" type="text/css" /&gt;
-	&lt;script src="PATH_TO_SOURCE/jquery-1.5.1.js" type="text/javascript"&gt;&lt;/script&gt;
-	&lt;script src="PATH_TO_SOURCE/jquery.tl.upcomingevents.js" type="text/javascript"&gt;&lt;/script&gt;</code></pre>
+<pre><code class="brush: xml;">&lt;link href="PATH_TO_SOURCE/jquery.tl.upcoming.css" rel="stylesheet" type="text/css" /&gt;
+&lt;script src="PATH_TO_SOURCE/jquery-1.5.1.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="PATH_TO_SOURCE/jquery.tl.upcomingevents.js" type="text/javascript"&gt;&lt;/script&gt;</code></pre>
 
 <p>Place the following html on your page where you want to show the Upcoming Events Widget.</p>
 
