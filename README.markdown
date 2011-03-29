@@ -1,5 +1,3 @@
-<h2>Introduction</h2>
-
 <p>Using the <a href="http://dev.ticketleap.com/">TicketLeap Public API</a> you can add your 
 	events to your own website. We've developed a <a href="http://jquery.com/">jQuery</a> plugin 
 	to demonstrate this. Take a look at the <a href="/Upcoming-Events-Widget/example.html">Upcoming 
