@@ -192,7 +192,7 @@
 			},
 
 			getObjects: function(eventSlug){
-				var url = this.options.apiUrl + "organizations/" + this.options.orgSlug + "/events" + (typeof eventSlug == 'string' ? '/' + eventSlug : '') + "?callback=?",
+				var url = this.options.apiUrl + "organizations/" + this.options.orgSlug + "/events" + (typeof eventSlug == 'string' ? '/' + eventSlug : '') + "?key=" + this.options.apiKey + "&callback=?",
 					pageNum = (typeof eventSlug == 'string' ? this.performancesPage : this.eventsPage);
 				
 				return $.ajax({
@@ -314,7 +314,8 @@
 	// default options
 	$.fn.upcomingEvents.defaults = {
 		pageSize: 5,
-		apiUrl: "http://public-api.current.ticketleap.com/"
+		apiUrl: "http://public-api.current.ticketleap.com/",
+		apiKey: "PUT_API_KEY_HERE"
 	};
 
 })(jQuery);

@@ -17,7 +17,8 @@
 					$('#upcoming-events').upcomingEvents({ 
 						pageSize: $('#perpage').val(),
 						orgSlug: $('#orgslug').val(),
-						apiUrl: $('#endpoint').val()
+						apiUrl: $('#endpoint').val(),
+						apiKey: $('#apikey').val()
 					 });
 				};
 				
@@ -45,6 +46,10 @@
 				<tr>
 					<td>API Endpoint:</td>
 					<td><input id="endpoint" type="text" value="http://public-api.current.ticketleap.com/" style="width: 300px;" /></td>
+				</tr>
+				<tr>
+					<td>API Key:</td>
+					<td><input id="apikey" type="text" value="PUT_API_KEY_HERE" style="width: 300px;" /></td>
 				</tr>
 				<tr>
 					<th></th>
