@@ -314,8 +314,7 @@
 	// default options
 	$.fn.upcomingEvents.defaults = {
 		pageSize: 5,
-		apiUrl: "http://public-api.current.ticketleap.com/",
-		apiKey: "PUT_API_KEY_HERE"
+		apiUrl: "http://public-api.ticketleap.com/"
 	};
 
 })(jQuery);
