@@ -19,13 +19,14 @@
 
 <pre><code class="brush: xml;">&lt;div id="#upcoming-events"&gt;&lt;/div&gt;</code></pre>
 
-<p>Initialize the Upcoming Events Widget. The code below can be placed anywhere on your page. There are two 
+<p>Initialize the Upcoming Events Widget. The code below can be placed anywhere on your page. There are three 
 	options to set when you initialize the widget:</p>
 	
 <ul>
 	<li><strong>orgSlug</strong> should be set to your organization's subdomain slug. This option is required.</li>
 	<li><strong>pageSize</strong> determines how many events and performances to show at a time. This is optional.
 		The default value is 5.</li>
+	<li><strong>apiKey</strong> should be set to your personal API key obtained from <a href="http://www.ticketleap.com">http://www.ticketleap.com</a> under "My Account"</li>
 </ul>
 
 <pre><code class="brush: js;">&lt;script type="text/javascript"&gt;
@@ -34,6 +35,7 @@
 		$('#upcoming-events').upcomingEvents({
 			orgSlug: 'awesomepuppies',
 			pageSize: 5
+			apiKey: 'PUT_API_KEY_HERE'
 		 });
 
 	});
@@ -54,3 +56,5 @@
 <p>Feel free to share your enhancements or fixes to the widget.
 	<a href="http://github.com/TicketLeap/Upcoming-Events-Widget">Fork the repository on GitHub</a> and submit a 
 	pull request.</p>
+
+
