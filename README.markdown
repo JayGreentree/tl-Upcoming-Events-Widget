@@ -34,7 +34,7 @@
 
 		$('#upcoming-events').upcomingEvents({
 			orgSlug: 'awesomepuppies',
-			pageSize: 5
+			pageSize: 5,
 			apiKey: 'PUT_API_KEY_HERE'
 		 });
 
