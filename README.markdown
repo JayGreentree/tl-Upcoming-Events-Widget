@@ -50,8 +50,7 @@
 
 <p>Depending on your site, there may be CSS and JavaScript conflicts with the Upcoming Events Widget. Though we 
 	can't help implement the widget on your site, if you find a bug with the <a href="http://dev.ticketleap.com/">Public API</a> or with 
-	the widget itself, please submit a <a href="https://ticketleap.zendesk.com/anonymous_requests/new">support 
-	request</a>.</p>
+	the widget itself, please submit a <a href="http://help.ticketleap.com">support request</a>.</p>
 	
 <p>Feel free to share your enhancements or fixes to the widget.
 	<a href="http://github.com/TicketLeap/Upcoming-Events-Widget">Fork the repository on GitHub</a> and submit a 
